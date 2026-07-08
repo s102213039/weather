@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .agent-tmp
+.vercel
 public/api-cache
 
 # Editor directories and files

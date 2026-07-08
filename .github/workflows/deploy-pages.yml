@@ -4,8 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '0 */6 * * *'
 
 permissions:
   contents: read
@@ -29,15 +27,11 @@ jobs:
 
       - run: npm ci
 
-      - name: Prefetch CWA API
-        run: node scripts/prefetch-api.mjs
-        env:
-          CWA_API_KEY: ${{ secrets.CWA_API_KEY }}
-
       - name: Build
         run: npm run build
         env:
-          VITE_MOENV_API_KEY: ${{ secrets.MOENV_API_KEY }}
+          GITHUB_ACTIONS: true
+          VITE_API_BASE: ${{ secrets.VITE_API_BASE }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

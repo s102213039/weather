@@ -10,8 +10,7 @@ import { fetchJson } from './fetchJson'
 type JsonRecord = Record<string, unknown>
 
 export function fetchCounty36h(locationName?: string) {
-  // ponytail: prod 用建置快取（全縣市），locationName 由 client 端篩選
-  const q = import.meta.env.PROD ? '' : locationName ? `?locationName=${encodeURIComponent(locationName)}` : ''
+  const q = locationName ? `?locationName=${encodeURIComponent(locationName)}` : ''
   return fetchJson<CountyForecastResponse>(`/api/cwa/F-C0032-001${q}`)
 }
 
@@ -24,12 +23,6 @@ export function fetchWarnings() {
 }
 
 export function fetchAirQuality() {
-  if (import.meta.env.PROD) {
-    const key = import.meta.env.VITE_MOENV_API_KEY ?? ''
-    return fetchJson<AirQualityRecord[]>(
-      `https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=${encodeURIComponent(key)}&format=json&limit=1000`,
-    )
-  }
   return fetchJson<AirQualityRecord[]>('/api/moenv/')
 }
 

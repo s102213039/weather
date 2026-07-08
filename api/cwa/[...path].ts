@@ -1,0 +1,21 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { pipeJson, preflight, requestUrl } from '../_lib/proxy'
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (preflight(req, res)) return
+  if (req.method !== 'GET') return res.status(405).end()
+
+  const key = process.env.CWA_API_KEY
+  if (!key) return res.status(500).json({ error: 'CWA_API_KEY not configured' })
+
+  const segments = req.query.path
+  const id = Array.isArray(segments) ? segments.join('/') : String(segments ?? '')
+  if (!id) return res.status(400).json({ error: 'missing dataset id' })
+
+  const params = requestUrl(req).searchParams
+  params.set('Authorization', key)
+  params.set('format', 'JSON')
+
+  const target = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/${id}?${params}`
+  await pipeJson(res, target)
+}

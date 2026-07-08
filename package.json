@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prefetch": "node scripts/prefetch-api.mjs",
     "build": "tsc -b && vite build",
-    "build:pages": "npm run prefetch && GITHUB_ACTIONS=true npm run build",
+    "build:pages": "GITHUB_ACTIONS=true npm run build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -23,6 +22,7 @@
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@vercel/node": "^5.3.21",
     "@vitejs/plugin-react": "^6.0.3",
     "oxlint": "^1.71.0",
     "tailwindcss": "^4.3.2",

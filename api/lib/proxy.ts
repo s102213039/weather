@@ -31,7 +31,6 @@ export async function pipeJson(res: VercelResponse, target: string) {
   const body = await upstream.text()
   res.status(upstream.status)
   res.setHeader('Content-Type', upstream.headers.get('content-type') ?? 'application/json')
-  // ponytail: edge 快取 5 分鐘，減輕 CWA 負載；使用者重整仍會打到最新（SWR）
   res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
   res.send(body)
 }

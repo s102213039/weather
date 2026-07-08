@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { pipeJson, preflight, requestUrl } from '../_lib/proxy'
+import { pipeJson, preflight, requestUrl } from '../lib/proxy'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (preflight(req, res)) return

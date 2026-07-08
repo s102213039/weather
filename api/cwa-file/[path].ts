@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { pipeJson, preflight, requestUrl } from '../lib/proxy'
+import { pipeJson, preflight, requestUrl } from '../../lib/proxy'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (preflight(req, res)) return
@@ -8,8 +8,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const key = process.env.CWA_API_KEY
   if (!key) return res.status(500).json({ error: 'CWA_API_KEY not configured' })
 
-  const segments = req.query.path
-  const id = Array.isArray(segments) ? segments.join('/') : String(segments ?? '')
+  const id = String(req.query.path ?? '')
   if (!id) return res.status(400).json({ error: 'missing dataset id' })
 
   const params = requestUrl(req).searchParams
